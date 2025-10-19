@@ -1,0 +1,18 @@
+graph TD
+    A[Client Application] --> B[Create HTTP Request]
+    B --> C[Add Headers & Body]
+    C --> D[Send via Network]
+    D --> E[Server Receives Request]
+    E --> F[Parse Request]
+    F --> G[Process Business Logic]
+    G --> H[Query Database/API]
+    H --> I[Generate Response]
+    I --> J[Add Response Headers]
+    J --> K[Send Response]
+    K --> L[Client Receives Response]
+    L --> M[Parse & Display Data]
+    
+    style D fill:#ffcccc
+    style K fill:#ffcccc
+    style A fill:#e1f5fe
+    style E fill:#e8f5e8

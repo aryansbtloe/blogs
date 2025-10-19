@@ -1,0 +1,32 @@
+sequenceDiagram
+    participant U as User
+    participant A as Mobile App
+    participant W as Wi-Fi Network
+    participant I as Internet
+    participant S as Bank Server
+    participant D as Database
+    
+    U->>A: 1. Enter login credentials
+    A->>A: 2. Create HTTP request
+    Note right of A: POST /login HTTP/1.1<br/>{"username": "john", "password": "secret123"}
+    
+    A->>W: 3. Send request via Wi-Fi
+    Note right of W: ⚠️ Wi-Fi owner can see all data!
+    
+    W->>I: 4. Route through internet
+    Note right of I: ⚠️ ISPs can monitor traffic!
+    
+    I->>S: 5. Forward to bank server
+    S->>D: 6. Query user database
+    D->>S: 7. Return user data
+    S->>S: 8. Generate response
+    Note right of S: HTTP/1.1 200 OK<br/>{"token": "abc123", "balance": "$1000"}
+    
+    S->>I: 9. Send response
+    I->>W: 10. Route back through internet
+    W->>A: 11. Forward to mobile app
+    A->>U: 12. Display account info
+    
+    rect rgb(255, 200, 200)
+        Note over W,I: 🚨 CRITICAL: All data visible in plain text!
+    end

@@ -1,0 +1,27 @@
+graph LR
+    subgraph "Client Side"
+        A[User Action] --> B[App Code]
+        B --> C[HTTP Request]
+    end
+    
+    subgraph "Network Transmission"
+        D[Plain Text Data]
+        E[Visible to Everyone]
+        F[No Encryption]
+    end
+    
+    subgraph "Server Side"
+        G[Web Server] --> H[Application Logic]
+        H --> I[Database Query]
+        I --> J[HTTP Response]
+    end
+    
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    J --> D
+    
+    style D fill:#ff9999
+    style E fill:#ff9999
+    style F fill:#ff9999

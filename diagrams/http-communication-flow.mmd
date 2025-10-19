@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant C as Client<br/>(Browser/App)
+    participant N as Network<br/>(Internet)
+    participant S as Server<br/>(Web Server)
+    
+    Note over C,S: HTTP Request-Response Cycle
+    
+    C->>N: 1. HTTP Request<br/>(Plain Text)
+    Note right of C: GET /api/user/profile HTTP/1.1<br/>Host: api.example.com<br/>User-Agent: MyApp/1.0
+    
+    N->>S: 2. Forward Request<br/>(Plain Text)
+    Note right of N: ⚠️ Anyone can read this data!
+    
+    S->>S: 3. Process Request<br/>(Server Logic)
+    Note right of S: • Parse request<br/>• Query database<br/>• Generate response
+    
+    S->>N: 4. HTTP Response<br/>(Plain Text)
+    Note right of S: HTTP/1.1 200 OK<br/>Content-Type: application/json<br/>{"user": "john", "email": "john@example.com"}
+    
+    N->>C: 5. Forward Response<br/>(Plain Text)
+    Note right of N: ⚠️ Response data is visible!
+    
+    Note over C,S: Connection typically closed after response
+    
+    rect rgb(255, 200, 200)
+        Note over C,S: 🚨 SECURITY RISK: All data transmitted in plain text!
+    end

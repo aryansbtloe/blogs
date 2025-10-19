@@ -31,6 +31,142 @@ HTTP follows a simple **client-server model**:
 3. **Server Response**: The server sends back the requested data
 4. **Connection Close**: The connection is typically closed after the response
 
+#### **Visual Representation: HTTP Communication Flow**
+
+![HTTP Communication Flow](images/http-communication-flow.png)
+*Figure 1: HTTP Request-Response Cycle showing plain text transmission and security risks*
+
+```mermaid
+sequenceDiagram
+    participant C as Client<br/>(Browser/App)
+    participant N as Network<br/>(Internet)
+    participant S as Server<br/>(Web Server)
+    
+    Note over C,S: HTTP Request-Response Cycle
+    
+    C->>N: 1. HTTP Request<br/>(Plain Text)
+    Note right of C: GET /api/user/profile HTTP/1.1<br/>Host: api.example.com<br/>User-Agent: MyApp/1.0
+    
+    N->>S: 2. Forward Request<br/>(Plain Text)
+    Note right of N: ⚠️ Anyone can read this data!
+    
+    S->>S: 3. Process Request<br/>(Server Logic)
+    Note right of S: • Parse request<br/>• Query database<br/>• Generate response
+    
+    S->>N: 4. HTTP Response<br/>(Plain Text)
+    Note right of S: HTTP/1.1 200 OK<br/>Content-Type: application/json<br/>{"user": "john", "email": "john@example.com"}
+    
+    N->>C: 5. Forward Response<br/>(Plain Text)
+    Note right of N: ⚠️ Response data is visible!
+    
+    Note over C,S: Connection typically closed after response
+    
+    rect rgb(255, 200, 200)
+        Note over C,S: 🚨 SECURITY RISK: All data transmitted in plain text!
+    end
+```
+
+#### **HTTP Request-Response Anatomy**
+
+![HTTP Request-Response Anatomy](images/http-request-response-anatomy.png)
+*Figure 2: Complete HTTP process flow from user action to data display*
+
+```mermaid
+graph TD
+    A[Client Application] --> B[Create HTTP Request]
+    B --> C[Add Headers & Body]
+    C --> D[Send via Network]
+    D --> E[Server Receives Request]
+    E --> F[Parse Request]
+    F --> G[Process Business Logic]
+    G --> H[Query Database/API]
+    H --> I[Generate Response]
+    I --> J[Add Response Headers]
+    J --> K[Send Response]
+    K --> L[Client Receives Response]
+    L --> M[Parse & Display Data]
+    
+    style D fill:#ffcccc
+    style K fill:#ffcccc
+    style A fill:#e1f5fe
+    style E fill:#e8f5e8
+```
+
+#### **HTTP Data Flow Visualization**
+
+![HTTP Data Flow](images/http-data-flow.png)
+*Figure 3: Data flow between client, network, and server components*
+
+```mermaid
+graph LR
+    subgraph "Client Side"
+        A[User Action] --> B[App Code]
+        B --> C[HTTP Request]
+    end
+    
+    subgraph "Network Transmission"
+        D[Plain Text Data]
+        E[Visible to Everyone]
+        F[No Encryption]
+    end
+    
+    subgraph "Server Side"
+        G[Web Server] --> H[Application Logic]
+        H --> I[Database Query]
+        I --> J[HTTP Response]
+    end
+    
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    J --> D
+    
+    style D fill:#ff9999
+    style E fill:#ff9999
+    style F fill:#ff9999
+```
+
+#### **Real-World HTTP Example Flow**
+
+![HTTP Real-World Example](images/http-real-world-example.png)
+*Figure 4: Complete banking login scenario showing security vulnerabilities at each step*
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant A as Mobile App
+    participant W as Wi-Fi Network
+    participant I as Internet
+    participant S as Bank Server
+    participant D as Database
+    
+    U->>A: 1. Enter login credentials
+    A->>A: 2. Create HTTP request
+    Note right of A: POST /login HTTP/1.1<br/>{"username": "john", "password": "secret123"}
+    
+    A->>W: 3. Send request via Wi-Fi
+    Note right of W: ⚠️ Wi-Fi owner can see all data!
+    
+    W->>I: 4. Route through internet
+    Note right of I: ⚠️ ISPs can monitor traffic!
+    
+    I->>S: 5. Forward to bank server
+    S->>D: 6. Query user database
+    D->>S: 7. Return user data
+    S->>S: 8. Generate response
+    Note right of S: HTTP/1.1 200 OK<br/>{"token": "abc123", "balance": "$1000"}
+    
+    S->>I: 9. Send response
+    I->>W: 10. Route back through internet
+    W->>A: 11. Forward to mobile app
+    A->>U: 12. Display account info
+    
+    rect rgb(255, 200, 200)
+        Note over W,I: 🚨 CRITICAL: All data visible in plain text!
+    end
+```
+
 ### **HTTP Request Structure**
 
 ```http
