@@ -342,3 +342,4 @@ HTTPS provides a robust security foundation for modern web communication through
 - Asymmetric vs symmetric encryption comparison
 - TLS handshake sequence diagram
 - Encryption algorithm performance comparison chart
+
